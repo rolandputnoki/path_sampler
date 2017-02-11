@@ -1,0 +1,2 @@
+set(path_sampler_MESSAGE_FILES "/home/osboxes/catkin_ws/src/path_sampler/msg/Point.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Config.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/ConfigInterval.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Environment.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Field.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Path.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Polygon.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Robot.msg;/home/osboxes/catkin_ws/src/path_sampler/msg/Scene.msg")
+set(path_sampler_SERVICE_FILES "")

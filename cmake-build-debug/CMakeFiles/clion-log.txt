@@ -1,0 +1,27 @@
+/home/osboxes/Downloads/clion-2016.3.2/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/osboxes/catkin_ws/src/path_sampler
+-- Using CATKIN_DEVEL_PREFIX: /home/osboxes/catkin_ws/src/path_sampler/cmake-build-debug/devel
+-- Using CMAKE_PREFIX_PATH: /opt/ros/kinetic
+-- This workspace overlays: /opt/ros/kinetic
+-- Using PYTHON_EXECUTABLE: /usr/bin/python
+-- Using Debian Python package layout
+-- Using empy: /usr/bin/empy
+-- Using CATKIN_ENABLE_TESTING: ON
+-- Call enable_testing()
+-- Using CATKIN_TEST_RESULTS_DIR: /home/osboxes/catkin_ws/src/path_sampler/cmake-build-debug/test_results
+-- Found gtest sources under '/usr/src/gtest': gtests will be built
+-- Using Python nosetests: /usr/bin/nosetests-2.7
+-- catkin 0.7.4
+-- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+-- path_sampler: 9 messages, 0 services
+CMake Warning at /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:416 (message):
+  catkin_package() include dir
+  '/home/osboxes/catkin_ws/src/path_sampler/cmake-build-debug/devel/include'
+  should be placed in the devel space instead of the build space
+Call Stack (most recent call first):
+  /opt/ros/kinetic/share/catkin/cmake/catkin_package.cmake:102 (_catkin_package)
+  CMakeLists.txt:110 (catkin_package)
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/osboxes/catkin_ws/src/path_sampler/cmake-build-debug
