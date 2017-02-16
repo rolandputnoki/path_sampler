@@ -7,8 +7,8 @@ project(path_sampler)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
-  #      robot_editor
-  message_generation
+  robot_editor
+#  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -45,18 +45,19 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   Point.msg
-   Config.msg
-   ConfigInterval.msg
-   Environment.msg
-   Field.msg
-   Path.msg
-   Polygon.msg
-   Robot.msg
-   Scene.msg
- )
+ #add_message_files(
+  # FILES
+   #Point.msg
+   #Cxonfig.msg
+   #ConfigInterval.msg
+   #Environment.msg
+   #Field.msg
+   #Path.msg
+   #Polygon.msg
+   #Robot.msg
+   #Scene.msg
+    #     Sampled_path.msg
+ #)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -197,3 +198,7 @@ include_directories(
 add_executable(sampler src/sampler.cpp)
 target_link_libraries(sampler ${catkin_LIBRARIES})
 add_dependencies(sampler path_sampler_generate_messages_cpp)
+
+add_executable(simple_path src/simple_path.cpp)
+target_link_libraries(simple_path ${catkin_LIBRARIES})
+add_dependencies(simple_path path_sampler_generate_messages_cpp)
