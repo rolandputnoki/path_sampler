@@ -4,13 +4,13 @@
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-#include "path_sampler/Path.h"
-#include "path_sampler/Point.h"
-#include "path_sampler/ConfigInterval.h"
+#include "robot_editor/Path.h"
+#include "robot_editor/Point.h"
+#include "robot_editor/ConfigInterval.h"
 
 
 
-using namespace path_sampler;
+using namespace robot_editor;
 
 int main(int argc, char **argv)
 {
@@ -32,7 +32,6 @@ int main(int argc, char **argv)
     int count = 0;
     while (ros::ok())
     {
-
         path_pub.publish(simple);
         ros::spinOnce();
         loop_rate.sleep();

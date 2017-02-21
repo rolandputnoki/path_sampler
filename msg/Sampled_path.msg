@@ -1,1 +1,1 @@
-Config[] sample_points
+robot_editor/Config[] sample_points
