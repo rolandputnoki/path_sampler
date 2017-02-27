@@ -21,14 +21,24 @@ int main(int argc, char **argv)
     Path simple;
     ConfigInterval egyenes1, egyenes2, koriv;
     Point start, end;
-    start.x = 650;
-    start.y = 100;
-    end.x = 270;
-    end.y = 55;
+    start.x = 0;
+    start.y = 0;
+    end.x = 20;
+    end.y = 30;
     egyenes1.start = start;
     egyenes1.end = end;
     egyenes1.configIntervalType = "TCI";
+    egyenes1.orientation = true;
     simple.segments.push_back(egyenes1);
+    Point center;
+    center.x = 30;
+    center.y = 0;
+    koriv.center = center;
+    koriv.arc_start = (M_PI - atan(30.0/10.0));
+    koriv.delta = -M_PI/2;
+    koriv.orientation = true;
+    koriv.radius = sqrt(30.0*30.0 + 10.0*10.0);
+    simple.segments.push_back(koriv);
     int count = 0;
     while (ros::ok())
     {
