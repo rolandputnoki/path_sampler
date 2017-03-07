@@ -1,5 +1,0 @@
-<launch>
-	<node pkg="path_sampler" type="simple_path" name="simple_path" />
-	<node pkg="path_sampler" type="sampler" name="sampler" />
-	<node pkg="rviz" type="rviz" name="rviz_path_sampling" args"-d /home/osboxes/.rviz/path_from_start_point.rviz/> 
-</launch>

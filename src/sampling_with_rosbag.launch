@@ -1,5 +1,5 @@
 <launch>
-    <node pkg="path_sampler" type="simple_path" args="" name="path_sending" />
+    <node pkg="rosbag" type="play" name="rosbag" args="-l $(find path_sampler)/bag/2017-02-08-22-46-12.bag" />
     <node pkg="path_sampler" type="sampler" args="" name="path_sampling" />
 	<node pkg="rviz" type="rviz" name="rviz_path_sampling" args="-d $(find path_sampler)/launch/rviz_config.rviz" />
 </launch>

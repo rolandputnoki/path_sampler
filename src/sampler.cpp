@@ -11,6 +11,10 @@
 #include <visualization_msgs/Marker.h>
 #include <tf/transform_broadcaster.h>
 
+
+double arc_points_dist = 10;
+double line_points_dist = 10;
+
 using namespace robot_editor;
 using namespace path_sampler;
 
@@ -38,14 +42,14 @@ geometry_msgs::Quaternion toQuaternion(double y_rot, double x_rot, double z_rot)
 void line_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
     double line_length = sqrt((c.start.x - c.end.x)*(c.start.x - c.end.x) + (c.start.y - c.end.y)*(c.start.y - c.end.y));
     ROS_INFO("A szakasz hossza: %lf", line_length);
-    unsigned int num_of_points = line_length/10;
+    unsigned int num_of_points = line_length/line_points_dist;
     double delta_x = (c.end.x - c.start.x)/num_of_points;
     double delta_y = (c.end.y - c.start.y)/num_of_points;
     double phi;
     //1. síknegyed
     if(c.start.x < c.end.x && c.start.y < c.end.y){
         double alfa =asin(fabs(c.end.y - c.start.y)/line_length);
-        if(c.orientation){
+        if(!c.orientation){
             phi = alfa;
         } else {
             phi = 180*degre_to_rad + alfa;
@@ -53,8 +57,8 @@ void line_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
     }
         //2. síknegyed
     else if(c.start.x > c.end.x && c.start.y > c.end.y){
-        double alfa =asin(fabs(c.end.y - c.start.y)/line_length)*degre_to_rad;
-        if(c.orientation != 0){
+        double alfa =asin(fabs(c.end.y - c.start.y)/line_length);
+        if(!c.orientation){
             phi = 180*degre_to_rad - alfa;
         } else {
             phi = 180*degre_to_rad - alfa + 180*degre_to_rad;
@@ -62,8 +66,8 @@ void line_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
     }
         //3. síknegyed
     else if(c.start.x > c.end.x && c.start.y > c.end.y){
-        double alfa =asin(fabs(c.end.y - c.start.y)/line_length)*degre_to_rad;
-        if(c.orientation != 0){
+        double alfa =asin(fabs(c.end.y - c.start.y)/line_length);
+        if(!c.orientation){
             phi = 180*degre_to_rad + alfa;
         } else {
             phi = alfa;
@@ -71,8 +75,8 @@ void line_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
     }
         //4. síknegyed
     else if(c.start.x < c.end.x && c.start.y > c.end.y){
-        double alfa =asin(fabs(c.end.y - c.start.y)/line_length)*degre_to_rad;
-        if(c.orientation != 0){
+        double alfa =asin(fabs(c.end.y - c.start.y)/line_length);
+        if(!c.orientation){
             phi = 360*degre_to_rad - alfa;
         } else {
             phi = 180*degre_to_rad - alfa;
@@ -102,9 +106,15 @@ void arc_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
     double circle_center_x = c.center.x;
     double circle_center_y = c.center.y;
     double radius = c.radius;
-    int arc_resolution = 5;
     double alfa = c.arc_start;    //x-tengellyel bezárt szög
+    if(alfa < 0){
+        alfa = alfa + 2*M_PI;
+    }
+
+    double arc_lenght = radius * fabs(c.delta);
+    int arc_resolution = arc_lenght/arc_points_dist;
     double delta_arc = fabs(c.delta*180/M_PI)/arc_resolution;    //Lépésköz szögben
+
     double diff_from_start = 0;     //A körív kezdetétől mennyire vagyunk
     double delta_x;         //A körív adott pontjának x koordinátájának eltérése a kör kp.jának x koordinátájától
     double delta_y;         //A körív adott pontjának y koordinátájának eltérése a kör kp.jának y koordinátájától
@@ -118,7 +128,7 @@ void arc_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
             delta_x = cos(alfa)*radius;
             //Egy irányba néz az autó, ha óra mutatóval szemben előre halad, vagy ha óra mutatóval megegyezően tolat
             //és ugyanez fordítva is igaz
-            if((c.delta > 0 && c.orientation != 0) || (c.delta < 0 && c.orientation == 0) ){
+            if((c.delta > 0 && c.orientation != 1) || (c.delta < 0 && c.orientation == 1) ){
                 phi = alfa + 90*degre_to_rad;
             } else{
                 phi = alfa + 270*degre_to_rad;
@@ -128,7 +138,7 @@ void arc_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
         else if(alfa <= 180*degre_to_rad){
             delta_y = sin(180*degre_to_rad-alfa)*radius;
             delta_x = -cos(M_PI-alfa)*radius;
-            if((c.delta > 0 && c.orientation != 0) || (c.delta < 0 && c.orientation == 0) ){
+            if((c.delta > 0 && c.orientation != 1) || (c.delta < 0 && c.orientation == 1) ){
                 phi = alfa + 90*degre_to_rad;
             } else{
                 phi = alfa - 90*degre_to_rad;
@@ -136,9 +146,9 @@ void arc_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
         }
         //3. síknegyed
         else if(alfa <= 270*degre_to_rad){
-            delta_y = -sin(270*degre_to_rad - alfa)*radius;
-            delta_x = -cos(270*degre_to_rad - alfa)*radius;
-            if((c.delta > 0 && c.orientation != 0) || (c.delta < 0 && c.orientation == 0) ){
+            delta_y = -cos(270*degre_to_rad - alfa)*radius;
+            delta_x = -sin(270*degre_to_rad - alfa)*radius;
+            if((c.delta > 0 && c.orientation != 1) || (c.delta < 0 && c.orientation == 1) ){
                 phi = alfa + 90*degre_to_rad;
             } else{
                 phi = alfa - 90*degre_to_rad;
@@ -146,10 +156,10 @@ void arc_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
         }
         //4. síknegyed
         else {
-            delta_y = -sin(alfa - 270*degre_to_rad)*radius;
-            delta_x = cos(alfa - 270*degre_to_rad)*radius;
+            delta_y = -cos(alfa - 270*degre_to_rad)*radius;
+            delta_x = sin(alfa - 270*degre_to_rad)*radius;
 
-            if((c.delta > 0 && c.orientation != 0) || (c.delta < 0 && c.orientation == 0) ){
+            if((c.delta > 0 && c.orientation != 1) || (c.delta < 0 && c.orientation == 1) ){
                 phi = alfa - 270*degre_to_rad;
             } else{
                 phi = alfa - 90*degre_to_rad;
@@ -170,7 +180,7 @@ void arc_sampler(ConfigInterval c, geometry_msgs::PoseArray & pa){
         } else {
             alfa -= delta_arc*degre_to_rad;
             if(alfa < 0){
-                alfa = 360*degre_to_rad;
+                alfa = alfa + 360*degre_to_rad;
             }
         }
     }
@@ -183,14 +193,17 @@ void pathCallback(const Path p)
     geometry_msgs::PoseArray pose_array;
 //    ROS_INFO("The lenght of path's segments array is %lu", len);
     for(int i = 0; i < len; i++){
-        if(p.segments[i].configIntervalType == "TCI"){
+
+//        if(i == 5) {
+            if (p.segments[i].configIntervalType == "TCI") {
 //            ROS_INFO("Ez egy szakasz");
-            line_sampler(p.segments[i], pose_array);
+                line_sampler(p.segments[i], pose_array);
 //            ROS_INFO("Az egyenest : %lu pontra osztottuk", sample.sample_points.size());
-        } else {
-            arc_sampler(p.segments[i], pose_array);
+            } else {
+                arc_sampler(p.segments[i], pose_array);
+            }
 //            ROS_INFO("Ez egy koriv");
-        }
+// }
     }
     tf::TransformBroadcaster br;
     tf::Transform transform;
