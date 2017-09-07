@@ -20,10 +20,10 @@ int main(int argc, char **argv)
 
 //Egyenes paraméterei
     Point start, end;
-    start.x = 20;
-    start.y = 20;
-    end.x = 40;
-    end.y = 50;
+    start.x = 196;
+    start.y = 232;
+    end.x = 75;
+    end.y = 58;
     egyenes1.start = start;
     egyenes1.end = end;
     egyenes1.configIntervalType = "TCI";

@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   robot_editor
+  geometry_msgs
   message_generation
   tf
 )
@@ -57,7 +58,9 @@ find_package(catkin REQUIRED COMPONENTS
    #Polygon.msg
    #Robot.msg
    #Scene.msg
-   Sampled_path.msg
+   CurvaturePoint.msg
+   SampledSection.msg
+   SampledPath.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -79,6 +82,8 @@ generate_messages(
    DEPENDENCIES
    std_msgs
    robot_editor
+   geometry_msgs
+   path_sampler
  )
 
 ################################################
